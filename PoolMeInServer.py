@@ -3,22 +3,21 @@
 #  To Check for user presence: http://localhost:8000/user?username=tim
 #  To Add a new user:          http://localhost:8000/user/add?username=tim&password=abcd1234
 #  To authenticate user:       http://localhost:8000/user/auth?username=tim&password=abcd1234
+#  Find posts near:			   http://localhost:8000/posts/near?x=50&y=50&r=50
 
 import cherrypy
-
 import pymongo
+import PoolMeInProps
+
+from PoolMeInDBHelper import PoolMeInDBHelper
 from pymongo import Connection
 
 class User(object):
 
     exposed = True
     
-    def __init__(self):
-        self.connection = Connection('dbh13.mongolab.com', 27137)
-        self.db=self.connection.poolmeindb
-        self.db.authenticate("pooladmin","admin123")
-        self.userCol=self.db.pool_users
-        self.userCol.create_index("username")
+    def __init__(self, dbHelper):
+        self.userCol= dbHelper.getCollectionRef(PoolMeInProps.REMOTE_COL_USERS)
     
     def _validate_param(self, paramMap, param):
         if (param in paramMap.keys()):
@@ -74,11 +73,7 @@ class Posts(object):
     exposed = True
     
     def __init__(self):
-        self.connection = Connection('dbh13.mongolab.com', 27137)
-        self.db=self.connection.poolmeindb
-        self.db.authenticate("pooladmin","admin123")
-        self.postsCol=self.db.carpool_posts
-        #self.postsCol.create_index("loc", pymongo.GEO2D)
+        self.postsCol= dbHelper.getCollectionRef(PoolMeInProps.REMOTE_COL_POSTS)
     
     def _validate_param(self, paramMap, param):
         if (param in paramMap.keys()):
@@ -111,8 +106,9 @@ class Posts(object):
 class Root(object):
     pass
 
+dbHelper= PoolMeInDBHelper()
 root = Root()
-root.user=User()
+root.user=User(dbHelper)
 root.posts=Posts()
 
 conf = {
