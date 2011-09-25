@@ -1,3 +1,4 @@
+import cherrypy
 import pymongo
 import PoolMeInProps
 
@@ -57,5 +58,5 @@ class User(object):
         else:
             return "User Exists"
 
-    def PUT(self):
-        return "hello from PUT"
+    def PUT(self, *vpath, **params):
+        return cherrypy.request.body.read()
