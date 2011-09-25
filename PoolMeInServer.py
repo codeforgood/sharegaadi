@@ -10,8 +10,8 @@ import pymongo
 import PoolMeInProps
 
 from PoolMeInDBHelper import PoolMeInDBHelper
-from users import user
-from rides import ride
+from users import User
+from rides import Ride
 
 class Root(object):
     pass
