@@ -1,8 +1,10 @@
 import cherrypy
 import pymongo
 import PoolMeInProps
+import json
 
 from PoolMeInDBHelper import PoolMeInDBHelper
+from utilities import Utility
 
 class User(object):
 
@@ -10,16 +12,18 @@ class User(object):
     
     def __init__(self, dbHelper):
         self.userCol= dbHelper.getCollectionRef(PoolMeInProps.REMOTE_COL_USERS)
+        self.user=None
     
     def _validate_param(self, paramMap, param):
         if (param in paramMap.keys()):
                return 1
         return 0
     
-    def _add_user(self, user_name, password):
-        self.userCol.insert({"username":user_name, "password":password})
-        
-    
+    def _add_user(self):
+        #self.userCol.insert({"username": "saddy","password": "xd45l3mf9"})
+        print json.dumps(self.user)
+        self.userCol.insert(self.user)
+            
     def _find_user(self, user_name):
         return self.userCol.find_one({"username":user_name})
     
@@ -35,13 +39,7 @@ class User(object):
             paramMap[k] = v
             
         if vpath:
-            if (vpath[0] == "add"):
-                self._validate_param(paramMap, "username")
-                self._validate_param(paramMap, "password")
-                self._add_user(paramMap["username"], paramMap["password"])
-                return "User "+paramMap["username"] + " Added Successfully"
-                
-            elif (vpath[0] == "auth"):
+            if (vpath[0] == "auth"):
                 self._validate_param(paramMap, "username")
                 self._validate_param(paramMap, "password")
                 is_auth = self._authenticate_user(paramMap["username"], paramMap["password"])
@@ -59,4 +57,16 @@ class User(object):
             return "User Exists"
 
     def PUT(self, *vpath, **params):
-        return cherrypy.request.body.read()
+        self.user=json.loads(cherrypy.request.body.read())
+        paramMap = {}
+        for k,v in params.items():
+            paramMap[k] = v        
+        if vpath:
+            if (vpath[0] == "add"):
+                self._validate_param(paramMap, "username")
+                self._add_user()
+                
+        userName=paramMap["username"]
+        result={userName:True}
+        
+        return json.dumps(result)
