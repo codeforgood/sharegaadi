@@ -1,5 +1,6 @@
 import pymongo
 import PoolMeInProps
+import json
 
 from PoolMeInDBHelper import PoolMeInDBHelper
 
@@ -19,7 +20,12 @@ class Ride(object):
         y1=int(y)
         r1=int(r)
         return self.postsCol.find({"loc": {"$within": {"$center": [[x1, y1], r1]}}})
-        
+
+    def _get_owner(self, owner):
+        print "Reached here"
+        ownerdoc = self.postsCol.find_one({"owner":owner})
+        return ownerdoc["owner"]+','+ownerdoc["source"]+','+ownerdoc["destin"]
+                
     def GET(self, *vpath, **params):
         paramMap = {}
         for k,v in params.items():
@@ -35,3 +41,7 @@ class Ride(object):
                 for post in posts_nearme:
                     result = result + str(post)
                 return result
+            if (vpath[0] == "get"):
+                self._validate_param(paramMap, "owner")
+                return self._get_owner(paramMap["owner"])
+                
