@@ -1,5 +1,8 @@
+#  Find rides near:        GET - http://localhost:8000/rides/near?lat=50&lon=30&radius=100
+
 import pymongo
 import PoolMeInProps
+import json
 
 from PoolMeInDBHelper import PoolMeInDBHelper
 
@@ -14,11 +17,11 @@ class Ride(object):
                return 1
         return 0
     
-    def _find_near(self, x, y, r):
-        x1=int(x)
-        y1=int(y)
-        r1=int(r)
-        return self.postsCol.find({"loc": {"$within": {"$center": [[x1, y1], r1]}}})
+    def _find_near_one(self, lat, lon, radius):
+        x=int(lat)
+        y=int(lon)
+        r=int(radius)
+        return self.postsCol.find_one({"location": {"$within": {"$center": [[x, y], r]}}})
         
     def GET(self, *vpath, **params):
         paramMap = {}
@@ -27,11 +30,9 @@ class Ride(object):
             
         if vpath:
             if (vpath[0] == "near"):
-                self._validate_param(paramMap, "x")
-                self._validate_param(paramMap, "y")
-                self._validate_param(paramMap, "r")
-                posts_nearme = self._find_near(paramMap["x"], paramMap["y"], paramMap["r"])
-                result= ""
-                for post in posts_nearme:
-                    result = result + str(post)
-                return result
+                self._validate_param(paramMap, "lat")
+                self._validate_param(paramMap, "lon")
+                self._validate_param(paramMap, "radius")
+                posts_nearme = self._find_near_one(paramMap["lat"], paramMap["lon"], paramMap["radius"])                
+                result = {"owner":posts_nearme["owner"], "source":posts_nearme["source"], "destin":posts_nearme["destin"]}                
+                return json.dumps(result,indent=4)
