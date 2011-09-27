@@ -24,9 +24,10 @@ class User(object):
         return 0
     
     def _add_user(self):
-        #self.userCol.insert({"username": "saddy","password": "xd45l3mf9"})
-        print json.dumps(self.user)
         self.userCol.insert(self.user)
+    
+    def _remove_user(self, userName):
+        self.userCol.remove({"username":userName})
             
     def _find_user(self, user_name):
         return self.userCol.find_one({"username":user_name})
@@ -64,13 +65,27 @@ class User(object):
         self.user=json.loads(cherrypy.request.body.read())
         paramMap = {}
         for k,v in params.items():
-            paramMap[k] = v        
+           paramMap[k] = v        
         if vpath:
             if (vpath[0] == "add"):
                 self._validate_param(paramMap, "username")
                 self._add_user()
                 
         userName=paramMap["username"]
-        result={userName:True}
+        result={userName:"Added"}
+        
+        return json.dumps(result)
+        
+    def DELETE(self, *vpath , **params):
+        paramMap = {}
+        for k,v in params.items():
+            paramMap[k] = v                
+        if vpath:
+            if (vpath[0] == "remove"):
+                self._validate_param(paramMap, "username")
+                userName=paramMap["username"]
+                self._remove_user(userName)
+                
+        result={userName:"Removed"}
         
         return json.dumps(result)
