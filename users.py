@@ -1,7 +1,7 @@
 # URI: 
 #  To Add a new user:          PUT - http://localhost:8000/user/add?username=tim
 #  To authenticate user:       GET - http://localhost:8000/user/auth?username=tim&password=abcd1234
-#  test for fogbugz integration
+#  test2 for fogbugz integration
 
 import cherrypy
 import pymongo
