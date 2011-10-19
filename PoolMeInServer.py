@@ -1,9 +1,4 @@
 # REST Service for Carpool app
-# URI: 
-#  To Check for user presence: http://localhost:8000/user?username=tim
-#  To Add a new user:          http://localhost:8000/user/add?username=tim&password=abcd1234
-#  To authenticate user:       http://localhost:8000/user/auth?username=tim&password=abcd1234
-#  Find rides near:			   http://localhost:8000/rides/near?x=50&y=50&r=50
 
 import cherrypy
 import pymongo
