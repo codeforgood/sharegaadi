@@ -16,11 +16,23 @@ class Ride(object):
         if (param in paramMap.keys()):
                return 1
         return 0
-    
+
+    def _find_near(self, x, y, r):
+        x1=int(x)
+        y1=int(y)
+        r1=int(r)
+        return self.postsCol.find({"loc": {"$within": {"$center": [[x1, y1], r1]}}})
+
+    def _get_owner(self, owner):
+        print "Reached here"
+        ownerdoc = self.postsCol.find_one({"owner":owner})
+        return ownerdoc["owner"]+','+ownerdoc["source"]+','+ownerdoc["destin"]
+        
     def _find_near_one(self, lat, lon, radius):
         x=int(lat)
         y=int(lon)
         r=int(radius)
+        print "Find near one"
         return self.postsCol.find_one({"location": {"$within": {"$center": [[x, y], r]}}})
         
     def GET(self, *vpath, **params):
