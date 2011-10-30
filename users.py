@@ -1,7 +1,7 @@
 #  REST URI
-#  To update details of existing user:      PUT     - http://localhost:8000/user/[username] with user authentication and other details json
-#  To authenticate or add a new user:       POST    - http://localhost:8000/user/[username] with user authentication and other details json
-#  To remove a  user:                       DELETE    - http://localhost:8000/user/[username] with user authentication
+#  To update details of existing user:      PUT     	- http://localhost:8000/user/[username] with user authentication and other details json
+#  To authenticate or add a new user:       POST    	- http://localhost:8000/user/[username] with user authentication and other details json
+#  To remove a  user:                       DELETE    	- http://localhost:8000/user/[username] with user authentication
 
 import cherrypy
 import pymongo
