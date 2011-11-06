@@ -29,28 +29,28 @@ class User(object):
         self.userCol.insert(self.user_in)
     
     def _remove_user(self, userName):
-        self.userCol.remove({"username":userName})
+        self.userCol.remove({PoolMeInProps.FIELD_USERNAME:userName})
             
     def _update_user(self, userName):
         self._remove_user(userName)
         self._add_user()
     
     def _find_user(self, userName):
-        return self.userCol.find_one({"username":userName})
+        return self.userCol.find_one({PoolMeInProps.FIELD_USERNAME:userName})
     
     def _build_user_map(self, user):
-        self.user_out["username"]=user["username"]
-        self.user_out["email"]=user["email"]
-        self.user_out["vehicles"]=user["vehicles"]
-        self.user_out["age"]=user["age"]
-        self.user_out["sex"]=user["sex"]
-        self.user_out["address"]=user["address"]
-        self.user_out["licensedtoDrive"]=user["licensedtoDrive"]
-        self.user_out["phoneNumber"]=user["phoneNumber"]
-        self.user_out["bestwayToReach"]=user["bestwayToReach"]
+        self.user_out[PoolMeInProps.FIELD_USERNAME]=user[PoolMeInProps.FIELD_USERNAME]
+        self.user_out[PoolMeInProps.FIELD_EMAIL]=user[PoolMeInProps.FIELD_EMAIL]
+        self.user_out[PoolMeInProps.FIELD_VEHICLES]=user[PoolMeInProps.FIELD_VEHICLES]
+        self.user_out[PoolMeInProps.FIELD_AGE]=user[PoolMeInProps.FIELD_AGE]
+        self.user_out[PoolMeInProps.FIELD_SEX]=user[PoolMeInProps.FIELD_SEX]
+        self.user_out[PoolMeInProps.FIELD_ADDRESS]=user[PoolMeInProps.FIELD_ADDRESS]
+        self.user_out[PoolMeInProps.FIELD_LICENSED]=user[PoolMeInProps.FIELD_LICENSED]
+        self.user_out[PoolMeInProps.FIELD_CONTACT]=user[PoolMeInProps.FIELD_CONTACT]
+        self.user_out[PoolMeInProps.FIELD_PREFERRED]=user[PoolMeInProps.FIELD_PREFERRED]
                    
     def _authenticate_user(self,user):        
-        if(user["password"] == self.user_in["password"]):
+        if(user[PoolMeInProps.FIELD_PASSWORD] == self.user_in[PoolMeInProps.FIELD_PASSWORD]):
             self._build_user_map(user)
             return True
         return False

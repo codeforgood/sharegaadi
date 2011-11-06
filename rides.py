@@ -1,5 +1,6 @@
 #  Find rides near:        GET - http://localhost:8000/rides/near?lat=50&lon=30&radius=100
 
+import cherrypy
 import pymongo
 import PoolMeInProps
 import json
@@ -38,7 +39,7 @@ class Ride(object):
         for ride in ridesNearLocation :
              result = {"owner":ride["owner"], "source":ride["source"], "destin":ride["destin"]}                
              ridesList.append(result)
-        return json.dump(ridesList)
+        return json.dumps(ridesList)
                 
     def GET(self, *vpath, **params):
         paramMap = {}
@@ -51,5 +52,6 @@ class Ride(object):
                 self._validate_param(paramMap, "lon")
                 self._validate_param(paramMap, "radius")
                 ridesNearLocation = self._find_near_one(paramMap["lat"], paramMap["lon"], paramMap["radius"])
+                cherrypy.response.headers["Content-Type"] = "application/json"
                 return ridesNearLocation;
                
