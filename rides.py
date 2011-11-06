@@ -33,8 +33,13 @@ class Ride(object):
         y=int(lon)
         r=int(radius)
         print "Find near one"
-        return self.postsCol.find_one({"location": {"$within": {"$center": [[x, y], r]}}})
-        
+        ridesNearLocation = self.postsCol.find({"location": {"$within": {"$center": [[x, y], r]}}})
+        ridesList = []
+        for ride in ridesNearLocation :
+             result = {"owner":ride["owner"], "source":ride["source"], "destin":ride["destin"]}                
+             ridesList.append(result)
+        return json.dump(ridesList)
+                
     def GET(self, *vpath, **params):
         paramMap = {}
         for k,v in params.items():
@@ -45,6 +50,6 @@ class Ride(object):
                 self._validate_param(paramMap, "lat")
                 self._validate_param(paramMap, "lon")
                 self._validate_param(paramMap, "radius")
-                posts_nearme = self._find_near_one(paramMap["lat"], paramMap["lon"], paramMap["radius"])                
-                result = {"owner":posts_nearme["owner"], "source":posts_nearme["source"], "destin":posts_nearme["destin"]}                
-                return json.dumps(result,indent=4)
+                ridesNearLocation = self._find_near_one(paramMap["lat"], paramMap["lon"], paramMap["radius"])
+                return ridesNearLocation;
+               
