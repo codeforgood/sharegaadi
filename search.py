@@ -1,5 +1,6 @@
 #  Find rides near:        GET - http://localhost:8000/rides/search/near?lat=50&lon=30&(limit=10)
 #  Find rides within:      GET - http://localhost:8000/rides/search/within?lat=50&lon=30&radius=100&(limit=10)
+#  Find rides with tags:   GET - http://localhost:8000/rides/search/tags?tag=men&tag=doordrop
 
 import cherrypy
 import pymongo
@@ -19,6 +20,10 @@ class Search(object):
         if (param in self.paramMap.keys()):
             return True
         return False
+    
+    def _find_with_tags(self, tags):
+        rideDocs = self.postsCol.find({"Tags":{"$in":tags}})
+        return rideDocs
     
     def _find_within_circle(self, lat, lon, radius, n=10):
         x=float(lat)
@@ -59,9 +64,15 @@ class Search(object):
                     return json.dumps({"Error":True,"Message":PoolMeInProps.REQUEST_PARAM_MISSING})
                 
                 if (self.paramMap.has_key("limit")):                    
-					rideDocs = self._find_within_circle(self.paramMap["lat"], self.paramMap["lon"], self.paramMap["radius"], self.paramMap["limit"])
+                    rideDocs = self._find_within_circle(self.paramMap["lat"], self.paramMap["lon"], self.paramMap["radius"], self.paramMap["limit"])
                 else:
                     rideDocs = self._find_within_circle(self.paramMap["lat"], self.paramMap["lon"], self.paramMap["radius"])
+            elif(vpath[0] == "tags"):
+                if not (self._validate_param("tag")):
+                    cherrypy.response.status = 400
+                    return json.dumps({"Error":True,"Message":PoolMeInProps.REQUEST_PARAM_MISSING})
+                else:
+                    rideDocs = self._find_with_tags(self.paramMap["tag"])
             else:
                 cherrypy.response.status = 400
                 return json.dumps({"Error":True,"Message":PoolMeInProps.INVALID_URI})
