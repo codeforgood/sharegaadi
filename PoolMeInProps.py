@@ -27,3 +27,23 @@ FIELD_ADDRESS='address'
 FIELD_LICENSED='licensedtoDrive'
 FIELD_CONTACT='phoneNumber'
 FIELD_PREFERRED='bestwayToReach'
+
+#Rides collection
+TIMESTAMP = 'timestamp'
+POST_LOCATION = 'location'
+LAT = 'lat'
+LON = 'lon'
+OWNER = 'owner'
+SOURCE_ADDRESS = 'source'
+COUNTRY = 'country'
+STATE = 'state'
+CITY = 'city'
+ZIP = 'zip'
+DESTIN_ADDRESS = 'destin'
+
+#constants
+EARTH_RADIUS_KM = 6371
+
+#error messages
+REQUEST_PARAM_MISSING= "A required query parameter was not specified for this request"
+INVALID_URI= "The requested URI does not represent any resource on the server"

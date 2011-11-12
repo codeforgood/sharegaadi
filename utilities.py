@@ -5,5 +5,7 @@ import json
 #this way we can avoid hardcoding document column names in code anywhere else
 
 class Utility:
-    def validate_userDoc_JSON(userDoc_JSON):
-        None
+
+    @staticmethod
+    def getRide(rideDocument):
+        return {"owner":rideDocument["owner"], "source":rideDocument["source"], "destin":rideDocument["destin"]}
