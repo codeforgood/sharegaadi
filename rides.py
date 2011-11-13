@@ -5,7 +5,7 @@
 
 import cherrypy
 import pymongo
-import PoolMeInProps
+import PoolMeInProps as PMIP
 import json
 
 from PoolMeInDBHelper import PoolMeInDBHelper
@@ -14,7 +14,7 @@ class Ride(object):
     exposed = True
     
     def __init__(self, dbHelper):
-        self.postsCol= dbHelper.getCollectionRef(PoolMeInProps.REMOTE_COL_POSTS)
+        self.postsCol= dbHelper.getCollectionRef(PMIP.REMOTE_COL_POSTS)
     
     def _validate_param(self, paramMap, param):
         if (param in paramMap.keys()):

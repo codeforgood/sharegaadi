@@ -5,7 +5,7 @@
 
 import cherrypy
 import pymongo
-import PoolMeInProps
+import PoolMeInProps as PMIP
 import json
 
 from PoolMeInDBHelper import PoolMeInDBHelper
@@ -16,7 +16,7 @@ class User(object):
     exposed = True
     
     def __init__(self, dbHelper):
-        self.userCol= dbHelper.getCollectionRef(PoolMeInProps.REMOTE_COL_USERS)
+        self.userCol= dbHelper.getCollectionRef(PMIP.REMOTE_COL_USERS)
         self.user_in=None
         self.user_out={}
     
@@ -29,28 +29,28 @@ class User(object):
         self.userCol.insert(self.user_in)
     
     def _remove_user(self, userName):
-        self.userCol.remove({PoolMeInProps.FIELD_USERNAME:userName})
+        self.userCol.remove({PMIP.FIELD_USERNAME:userName})
             
     def _update_user(self, userName):
         self._remove_user(userName)
         self._add_user()
     
     def _find_user(self, userName):
-        return self.userCol.find_one({PoolMeInProps.FIELD_USERNAME:userName})
+        return self.userCol.find_one({PMIP.FIELD_USERNAME:userName})
     
     def _build_user_map(self, user):
-        self.user_out[PoolMeInProps.FIELD_USERNAME]=user[PoolMeInProps.FIELD_USERNAME]
-        self.user_out[PoolMeInProps.FIELD_EMAIL]=user[PoolMeInProps.FIELD_EMAIL]
-        self.user_out[PoolMeInProps.FIELD_VEHICLES]=user[PoolMeInProps.FIELD_VEHICLES]
-        self.user_out[PoolMeInProps.FIELD_AGE]=user[PoolMeInProps.FIELD_AGE]
-        self.user_out[PoolMeInProps.FIELD_SEX]=user[PoolMeInProps.FIELD_SEX]
-        self.user_out[PoolMeInProps.FIELD_ADDRESS]=user[PoolMeInProps.FIELD_ADDRESS]
-        self.user_out[PoolMeInProps.FIELD_LICENSED]=user[PoolMeInProps.FIELD_LICENSED]
-        self.user_out[PoolMeInProps.FIELD_CONTACT]=user[PoolMeInProps.FIELD_CONTACT]
-        self.user_out[PoolMeInProps.FIELD_PREFERRED]=user[PoolMeInProps.FIELD_PREFERRED]
+        self.user_out[PMIP.FIELD_USERNAME]=user[PMIP.FIELD_USERNAME]
+        self.user_out[PMIP.FIELD_EMAIL]=user[PMIP.FIELD_EMAIL]
+        self.user_out[PMIP.FIELD_VEHICLES]=user[PMIP.FIELD_VEHICLES]
+        self.user_out[PMIP.FIELD_AGE]=user[PMIP.FIELD_AGE]
+        self.user_out[PMIP.FIELD_SEX]=user[PMIP.FIELD_SEX]
+        self.user_out[PMIP.FIELD_ADDRESS]=user[PMIP.FIELD_ADDRESS]
+        self.user_out[PMIP.FIELD_LICENSED]=user[PMIP.FIELD_LICENSED]
+        self.user_out[PMIP.FIELD_CONTACT]=user[PMIP.FIELD_CONTACT]
+        self.user_out[PMIP.FIELD_PREFERRED]=user[PMIP.FIELD_PREFERRED]
                    
     def _authenticate_user(self,user):        
-        if(user[PoolMeInProps.FIELD_PASSWORD] == self.user_in[PoolMeInProps.FIELD_PASSWORD]):
+        if(user[PMIP.FIELD_PASSWORD] == self.user_in[PMIP.FIELD_PASSWORD]):
             self._build_user_map(user)
             return True
         return False

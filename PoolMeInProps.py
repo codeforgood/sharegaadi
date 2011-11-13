@@ -3,12 +3,20 @@
 ## There will not be reference the DB column names anywhere in application 
 ## apart from this place.
 
+DB= "local" #allowed values: local/remote
 
 #DB credentials
+#mongolab cloud DB
 REMOTE_DB_HOST = 'dbh13.mongolab.com'
 REMOTE_DB_PORT = 27137
+REMOTE_DB = 'poolmeindb'
 REMOTE_DB_USER = 'pooladmin'
 REMOTE_DB_PASS = 'admin123'
+
+#localhost
+LOCAL_DB_HOST = 'localhost'
+LOCAL_DB_PORT = 27017
+LOCAL_DB = 'test'
 
 #Collection Details
 REMOTE_COL_USERS = 'pool_users'

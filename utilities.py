@@ -8,4 +8,4 @@ class Utility:
 
     @staticmethod
     def getRide(rideDocument):
-        return {"owner":rideDocument["owner"], "source":rideDocument["source"], "destin":rideDocument["destin"]}
+        return {"owner":rideDocument["owner"], "route":rideDocument["route"]}
