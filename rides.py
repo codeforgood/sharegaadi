@@ -1,8 +1,15 @@
+
 #  Find rides near:             GET - http://localhost:8000/rides/near?lat=50&lon=30&radius=100
 #  Find rides owned by name:    GET - http://localhost:8000/rides/owner?name=saddy
 
+# Post a ride
+# Delete a ride
+# Update a ride
+# Get a ride detail
+
+import cherrypy
 import pymongo
-import PoolMeInProps
+import PoolMeInProps as PMIP
 import json
 import cherrypy
 from PoolMeInDBHelper import PoolMeInDBHelper
@@ -11,9 +18,13 @@ class Ride(object):
     exposed = True
     
     def __init__(self, dbHelper):
+
         self.postsCol= dbHelper.getCollectionRef(PoolMeInProps.REMOTE_COL_POSTS)
         self.ride_in = None
         self.ride_out = {}
+
+        self.postsCol= dbHelper.getCollectionRef(PMIP.REMOTE_COL_POSTS)
+
     
     def _validate_param(self, paramMap, param):
         if (param in paramMap.keys()):
@@ -75,3 +86,6 @@ class Ride(object):
             if (vpath[0] == "owner"):
                 self._validate_param(paramMap, "name")
                 return self._get_owner(paramMap["name"])
+            
+	
+

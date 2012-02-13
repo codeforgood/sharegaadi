@@ -7,6 +7,7 @@ import PoolMeInProps
 from PoolMeInDBHelper import PoolMeInDBHelper
 from users import User
 from rides import Ride
+from search import Search
 
 class Root(object):
     pass
@@ -15,6 +16,7 @@ dbHelper= PoolMeInDBHelper()
 root = Root()
 root.user=User(dbHelper)
 root.rides=Ride(dbHelper)
+root.rides.search=Search(dbHelper)
 
 conf = {
     'global': {

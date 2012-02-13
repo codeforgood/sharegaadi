@@ -1,0 +1,26 @@
+<html>
+<head>
+<script type="text/javascript"src="http://www.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAhZ--4C1_N1jqmiSDcfEfShT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTsIzyUvdXaA4p26WtvMGxSzL9fZw">
+<script type="text/javascript"charset="utf-8">google.load("maps","2.x"); google.load("jquery","1.3.1");</script>
+</head>
+
+<body>
+
+<div id="map"></div>
+<style media="screen"type="text/css">#map { width:500px; height:500px; }</style>
+
+<script type="text/javascript">
+function load()
+{
+	  var map = new GMap(document.getElementById('map')); 
+	
+	  var burnsvilleMN = new GLatLng(37.229573,-80.413939); 
+	
+	  map.setCenter(burnsvilleMN, 8); 
+}
+
+load();
+</script>
+
+</body>
+</html>
