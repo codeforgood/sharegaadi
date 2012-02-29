@@ -28,10 +28,32 @@
       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCgTArtqMNiHfqWeJeSprYnjEkk3UKg7tc&sensor=false">
     </script>	
 	<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="../js/main.js"></script>		
+	<script type="text/javascript" src="../js/main.js"></script>
+	<!--<script type="text/javascript" src="../js/fb-auth.js"></script>-->
+	<script>
+		window.fbAsyncInit = function() {
+		  FB.init({
+			appId      : '366467473377722',
+			status     : true, 
+			cookie     : true,
+			xfbml      : true,
+			oauth      : true,
+		  });
+		  
+		  FB.Event.subscribe('auth.login', function(response) {
+			window.location.reload();
+		  });
+		};
+		(function(d){
+		   var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+		   js = d.createElement('script'); js.id = id; js.async = true;
+		   js.src = "//connect.facebook.net/en_US/all.js";
+		   d.getElementsByTagName('head')[0].appendChild(js);
+		 }(document));
+	</script>	
   </head>
 
-  <body onload="initialize()">	
+  <body onload="initialize()">	  
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -62,7 +84,13 @@
 			  <form class="navbar-search pull-left">
 					<input type="text" class="search-query" placeholder="Type city to center map...">
 			  </form>
-            </ul>
+			</ul>  
+			<ul class="nav pull-right">            	
+				<li>
+					<div id="fb-root"></div>
+					<a><fb:login-button>Sign in with Facebook</fb:login-button></a>
+    			</li>
+			</ul>		             
           </div><!--/.nav-collapse -->
         </div>
       </div>
