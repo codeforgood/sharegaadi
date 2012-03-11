@@ -3,7 +3,9 @@ var AppRouter = Backbone.Router.extend({
     routes:{
         "":"home",
 		"about":"about",
-		"search":"search"
+		"search":"search",
+		"contact":"contact",
+		"subscribe" :"subscribe"
     },
 
     initialize:function () {
@@ -29,8 +31,17 @@ var AppRouter = Backbone.Router.extend({
 		this.searchView = new searchView();
         $('#content').html(this.searchView.render().el);
 		initialize_map();
-	}
+	},
 
+	contact:function (){
+		this.contactView = new contactView();
+        $('#content').html(this.contactView.render().el);
+	},
+	
+	subscribe:function (){
+		this.subscribeView = new subscribeView();
+        $('#content').html(this.subscribeView.render().el);
+	}
 
 });
 
@@ -70,7 +81,7 @@ function initialize_map() {
 	  	  
 $(document).ready(function(){
 	
-	tpl.loadTemplates(['home', 'header','about', 'search'],
+	tpl.loadTemplates(['home', 'header','about', 'search', 'contact', 'subscribe'],
 		function () {
 			app = new AppRouter();
 			Backbone.history.start();
