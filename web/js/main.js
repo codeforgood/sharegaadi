@@ -1,4 +1,40 @@
-function initialize() {	
+var AppRouter = Backbone.Router.extend({
+
+    routes:{
+        "":"home",
+		"about":"about",
+		"search":"search"
+    },
+
+    initialize:function () {
+        this.headerView = new HeaderView();
+        $('.header').html(this.headerView.render().el);
+		$('.dropdown-toggle').dropdown();		
+    },
+
+    home:function () {
+        if (!this.homeView) {
+            this.homeView = new HomeView();
+            this.homeView.render();
+        }
+        $('#content').html(this.homeView.el);		
+    },
+	
+	about:function (){
+		this.aboutView = new AboutView();
+        $('#content').html(this.aboutView.render().el);
+	},
+	
+	search:function (){
+		this.searchView = new searchView();
+        $('#content').html(this.searchView.render().el);
+		initialize_map();
+	}
+
+
+});
+
+function initialize_map() {	
 	var Chennai = new google.maps.LatLng(13.0604220, 80.2495830);
 	var initialLocation = Chennai;
 	
@@ -14,14 +50,29 @@ function initialize() {
 		navigator.geolocation.getCurrentPosition(function(position) {
 		  initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 		  map.setCenter(initialLocation);
+		  addMarker(initialLocation);
 		}, function() {
 		  map.setCenter(initialLocation);
 		});
 	}else {
 		map.setCenter(initialLocation);
 	}
+	
+	function addMarker(location) {
+		var marker = new google.maps.Marker({
+			position: location,
+			map: map,
+			animation: google.maps.Animation.DROP,
+			title:"We got you"
+		  });		
+	}
 }
 	  	  
 $(document).ready(function(){
-	$('.dropdown-toggle').dropdown();							
+	
+	tpl.loadTemplates(['home', 'header','about', 'search'],
+		function () {
+			app = new AppRouter();
+			Backbone.history.start();
+		});		
 });
