@@ -11,7 +11,8 @@
 		<ul class="nav">
 		  <li class="active"><a href="#">Home</a></li>								
 		  <li><a href="#about">About</a></li>
-		  <li><a href="#contact">Contact</a></li>			  
+		  <li><a href="#contact">Contact</a></li>
+		  <li><a href="http://sharegaadi.tumblr.com/">Blog</a></li>
 		  <li class="divider-vertical"></li>
 		  <li><a href="#search">Search for Rides</a></li>
 		  <li class="dropdown" id="menu1">
@@ -28,7 +29,84 @@
 		</ul>  
 		<ul class="nav pull-right">            	
 			<li>
-				<a><fb:login-button>Sign in with Facebook</fb:login-button></a>
+				<div id="fb-root"></div>
+				  <script>
+					window.fbAsyncInit = function() {
+					  FB.init({
+						appId      : '366467473377722',
+						status     : true, 
+						cookie     : true,
+						xfbml      : true,
+						oauth      : true,
+					  });
+					  
+					showLoader(true);
+ 
+					function login(response, info){
+						alert("hi");
+						if (response.authResponse) {
+							var accessToken      =   response.authResponse.accessToken;		
+							userInfo.innerHTML   = '<img src="https://graph.facebook.com/' + info.id + '/picture">' + info.name;																			
+							button.innerHTML     = 'Logout';
+							showLoader(false);
+						}
+					}
+		 
+					function logout(response){
+						userInfo.innerHTML  =  "";
+						showLoader(false);
+					}	
+										
+					function updateButton(response) {
+					   alert("hi");
+						button       =   document.getElementById('fb-auth');
+						userInfo     =   document.getElementById('user-info');
+			 
+						if (response.authResponse) {
+							alert("hi");
+							//user is already logged in and connected
+							FB.api('/me', function(info) {
+								login(response, info);
+							});
+			 
+							button.onclick = function() {
+								FB.logout(function(response) {
+									logout(response);
+								});
+							};
+						} else {
+							//user is not connected to your app or logged out
+							button.innerHTML = 'Login with Facebook';
+							button.onclick = function() {
+								showLoader(true);
+								FB.login(function(response) {
+									if (response.authResponse) {
+										FB.api('/me', function(info) {
+											login(response, info);
+										});
+									} else {
+										//user cancelled login or did not grant authorization
+										showLoader(false);
+									}
+								}, {scope:'email,user_birthday,status_update,publish_stream,user_about_me'});
+							}
+						}
+					}
+			 
+					// run once with current status and whenever the status changes
+					FB.getLoginStatus(updateButton);
+					FB.Event.subscribe('auth.statusChange', updateButton);
+					};
+					
+					(function(d){
+					   var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+					   js = d.createElement('script'); js.id = id; js.async = true;
+					   js.src = "//connect.facebook.net/en_US/all.js";
+					   d.getElementsByTagName('head')[0].appendChild(js);
+					 }(document));			
+				</script>
+				<div id="fb-auth" class="fb-login-button">Login with Facebook</div>				 
+				<div id="user-info"></div>
 			</li>
 		</ul>		             
 	  </div><!--/.nav-collapse -->
