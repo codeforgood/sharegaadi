@@ -1,11 +1,6 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
 	<div class="container">
-	  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-	  </a>
 	  <a class="brand" href="#">ShareGaadi</a>
 	  <div class="nav-collapse">
 		<ul class="nav">
@@ -27,86 +22,94 @@
 				</ul>
 		  </li>		 	
 		</ul>  
-		<ul class="nav pull-right">            	
-			<li>
-				<div id="fb-root"></div>
-				  <script>
-					window.fbAsyncInit = function() {
-					  FB.init({
-						appId      : '366467473377722',
-						status     : true, 
-						cookie     : true,
-						xfbml      : true,
-						oauth      : true,
-					  });
-					  
-					showLoader(true);
+		         
+		<div id="fb-root"></div>
+		  <script>
+			window.fbAsyncInit = function() {
+			  FB.init({
+				appId      : '366467473377722',
+				status     : true, 
+				cookie     : true,
+				xfbml      : true,
+				oauth      : true,
+			  });					  
+
+			function login(response, info){
+				if (response.authResponse) {
+					var accessToken      =   response.authResponse.accessToken;		
+					userInfo.innerHTML   = /*'<img width=25 height=25 src="https://graph.facebook.com/' + info.id + '/picture"> ' +*/ info.name;			
+					loggedin.style.display   = 'block';
+					button.style.display     = 'none';
+				}
+			}
  
-					function login(response, info){
-						alert("hi");
-						if (response.authResponse) {
-							var accessToken      =   response.authResponse.accessToken;		
-							userInfo.innerHTML   = '<img src="https://graph.facebook.com/' + info.id + '/picture">' + info.name;																			
-							button.innerHTML     = 'Logout';
-							showLoader(false);
-						}
-					}
-		 
-					function logout(response){
-						userInfo.innerHTML  =  "";
-						showLoader(false);
-					}	
-										
-					function updateButton(response) {
-					   alert("hi");
-						button       =   document.getElementById('fb-auth');
-						userInfo     =   document.getElementById('user-info');
-			 
-						if (response.authResponse) {
-							alert("hi");
-							//user is already logged in and connected
-							FB.api('/me', function(info) {
-								login(response, info);
-							});
-			 
-							button.onclick = function() {
-								FB.logout(function(response) {
-									logout(response);
-								});
-							};
-						} else {
-							//user is not connected to your app or logged out
-							button.innerHTML = 'Login with Facebook';
-							button.onclick = function() {
-								showLoader(true);
-								FB.login(function(response) {
-									if (response.authResponse) {
-										FB.api('/me', function(info) {
-											login(response, info);
-										});
-									} else {
-										//user cancelled login or did not grant authorization
-										showLoader(false);
-									}
-								}, {scope:'email,user_birthday,status_update,publish_stream,user_about_me'});
-							}
-						}
-					}
-			 
-					// run once with current status and whenever the status changes
-					FB.getLoginStatus(updateButton);
-					FB.Event.subscribe('auth.statusChange', updateButton);
+			function logout(response){
+				userInfo.innerHTML  =  "";
+				loggedin.style.display   = 'none';
+				button.style.display     = 'block';
+			}	
+								
+			function updateButton(response) {
+				button       =   document.getElementById('fb-auth');
+				userInfo     =   document.getElementById('user-info');
+				loggedin     =   document.getElementById('loggedin');
+	 
+				if (response.authResponse) {
+					//user is already logged in and connected
+					FB.api('/me', function(info) {
+						login(response, info);
+					});
+	 
+					button.onclick = function() {
+						FB.logout(function(response) {
+							logout(response);
+						});
 					};
-					
-					(function(d){
-					   var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-					   js = d.createElement('script'); js.id = id; js.async = true;
-					   js.src = "//connect.facebook.net/en_US/all.js";
-					   d.getElementsByTagName('head')[0].appendChild(js);
-					 }(document));			
-				</script>
-				<div id="fb-auth" class="fb-login-button">Login with Facebook</div>				 
-				<div id="user-info"></div>
+				} else {
+					//user is not connected to your app or logged out
+					button.style.display     = 'block';
+					button.onclick = function() {
+						FB.login(function(response) {
+							if (response.authResponse) {
+								FB.api('/me', function(info) {
+									login(response, info);
+								});
+							} else {
+								//user cancelled login or did not grant authorization
+							}
+						}, {scope:'email,user_birthday,status_update,publish_stream,user_about_me'});
+					}
+				}
+			}
+	 
+			// run once with current status and whenever the status changes
+			//FB.getLoginStatus(updateButton);
+			FB.Event.subscribe('auth.statusChange', updateButton);
+			};
+			
+			(function(d){
+			   var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+			   js = d.createElement('script'); js.id = id; js.async = true;
+			   js.src = "//connect.facebook.net/en_US/all.js";
+			   d.getElementsByTagName('head')[0].appendChild(js);
+			 }(document));			
+		</script>
+		<ul class="nav pull-right">
+		<li>
+			<a><div id= "fb-auth" class="fb-login-button">Login with Facebook</div></a>
+		</li>
+		</ul>
+		<ul style= "display:none"  id= "loggedin" class="nav pull-right">
+			<li>				
+				<a id="user-info"></a>
+			</li>
+			<li id="login" class="dropdown">				
+				<a class="dropdown-toggle" data-toggle="dropdown">				
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					 <li><a onclick="FB.getLoginStatus(updateButton)">Logout</a></li>
+				</ul>
 			</li>
 		</ul>		             
 	  </div><!--/.nav-collapse -->
