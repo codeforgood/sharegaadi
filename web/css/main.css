@@ -3,9 +3,13 @@ body {
 }
 
 #map_canvas { 
-	height: 250px; 
+	height: 200px; 
 }
 	  
 .feelingsarea{		
 	width:450px;
+}
+
+.no-display{
+	display:none;
 }

@@ -30,7 +30,7 @@ var AppRouter = Backbone.Router.extend({
 	search:function (){
 		this.searchView = new searchView();
         $('#content').html(this.searchView.render().el);
-		initialize_map();
+		initialize_map();	
 	},
 
 	contact:function (){
@@ -81,7 +81,7 @@ function initialize_map() {
 	  	  
 $(document).ready(function(){
 	
-	tpl.loadTemplates(['home', 'header','about', 'search', 'contact', 'subscribe'],
+	tpl.loadTemplates(['home', 'header','about', 'search', 'contact', 'subscribe', 'search_result_item'],
 		function () {
 			app = new AppRouter();
 			Backbone.history.start();
