@@ -1,10 +1,5 @@
 window.Sharegaadi = Backbone.Model.extend({
 
-    /*initialize:function () {
-		 this.set({"source": "chennai","destination": "bangalore"});
-		 this.set({"source": "chennai","destination": "delhi"});
-    }*/
-
 });
 
 window.SharegaadiCollection = Backbone.Collection.extend({
@@ -12,7 +7,14 @@ window.SharegaadiCollection = Backbone.Collection.extend({
 	model:Sharegaadi,
 	
 	initialize:function(){
-		this.add(new this.model({"source": "chennai","destination": "bangalore"}));
-		this.add(new this.model({"source": "chennai","destination": "delhi"}));
+	    var self = this;
+		$.getJSON('data/results.json',function (data) {
+			
+			setTimeout(function() {
+				$.each(data.trips, function(i,trip){				
+					self.add(new self.model({"source": trip.source,"destination": trip.destination}));			
+				});
+			}, 3000);
+        });
 	}
 });

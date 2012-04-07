@@ -3,6 +3,14 @@ window.SearchListView = Backbone.View.extend({
     tagName:'ul',
 
     className:'nav nav-list',
+	
+	 initialize:function () {
+        var self = this;
+        this.model.bind("reset", this.render, this);
+        this.model.bind("add", function (sharegaadi) {
+            $(self.el).append(new SearchListItemView({model:sharegaadi}).render().el);
+        });
+    },
 
     render:function (eventName) {
         $(this.el).empty();
