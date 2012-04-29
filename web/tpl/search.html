@@ -1,32 +1,50 @@
-<div class="row-fluid">
-	<div class="span5">				
-		<form class="well form-horizontal" id="searchform">					
-			<label><strong>Search Rides</strong></label>
-			<input type="text" class="input-medium search-query" placeholder="Source">						
-			<input type="text" class="input-medium  search-query" placeholder="Destination">			
-			<a class="btn btn-success"><i class="icon-search"></i></a>
-		</form>          		
-	</div>	
-	<div class="span7">
+<div class="row">
+	<div class="span8">
+		<form class="well form-inline" id="searchform">
+			<fieldset>
+				<div class="control-group">
+					<label><strong>Search Rides</strong></label>
+				</div>
+				<div class="control-group">
+					<input type="text" class="input-xlarge" placeholder="Source">						
+					<input type="text" class="input-xlarge" placeholder="Destination">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<i class="icon-calendar"></i>
+					<input type="date" class="input-mini" placeholder="Start" name="start_date"/>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<a class="btn btn-success"><i class="icon-search"></i>&nbsp;Search</a>
+				</div>
+			 </fieldset>
+		</form>
+	</div>
+	<div class="span4">
 		<form class="well" id="filterform">
 			<label><strong>Filter Rides</strong></label>
-			<div class="btn-group">
-				 <button class="btn">1</button>
-				 <button class="btn">2</button>
-				 <button class="btn">3</button>
+			<div class="control-group">
+				<div class="btn-group" data-toggle="buttons-radio">
+				  <button class="btn">All</button>
+				  <button class="btn">Middle</button>
+				  <button class="btn">Right</button>
+				</div>
 			</div>
 		</form>
 	</div>
 </div>
 <div class="row">
-	<div id="map_canvas" class="span5" ></div>
-	<div class="span7">
+	<div id="map_canvas" class="span12" ></div>
+</div>
+<div class="row">
+	<div class="span12">
         <div id="search_results" class="well">
             <h3 class="modal-header">Sharegaadi's Available</h3>
-            <div class="alert alert-info">
+            <div class="alert alert-info no-display">
               <h4 class="alert-heading">No results found.</h4>           
             </div>
-        </div>
+			<div class="progress progress-striped active no-display">
+				<div class="bar" style="width: 50%;"></div>
+			</div>
+			<!-- search results goes here -->
+		</div>		
     </div>
 </div>
 <div class="row-fluid">

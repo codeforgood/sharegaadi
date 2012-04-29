@@ -14,7 +14,7 @@ window.SharegaadiCollection = Backbone.Collection.extend({
 				$.each(data.trips, function(i,trip){				
 					self.add(new self.model({"source": trip.source,"destination": trip.destination}));			
 				});
-			}, 3000);
+			}, 1000);
         });
 	}
 });

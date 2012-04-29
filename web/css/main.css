@@ -13,3 +13,10 @@ body {
 .no-display{
 	display:none;
 }
+
+div.inline { 
+	display:inline-block;
+}
+.clearBoth { 
+	clear:both; 
+}
